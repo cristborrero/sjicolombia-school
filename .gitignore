@@ -1,0 +1,39 @@
+# Environment variables & Secrets
+.env
+.env.*
+!.env.example
+
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Mac OS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# IDE / Editor
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# PHP / Composer / Laravel
+/vendor/
+composer.phar
+composer.lock
+.phpunit.result.cache
+/storage/*.key
+/storage/app/public/
+/storage/framework/
+/storage/logs/
+/bootstrap/cache/
+
+# Gentle AI internal cache
+.atl/
