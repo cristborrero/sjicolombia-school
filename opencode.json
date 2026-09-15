@@ -259,14 +259,14 @@
   "provider": {
     "xkiro": {
       "models": {
-        "minimax/minimax-m3:free": {
-          "name": "MiniMax M3 (Free)"
+        "sensenova/sensenova-6.7-flash-lite": {
+          "name": "SenseNova 6.7 Flash-Lite (Free)"
         },
-        "qwen/qwen3-coder-plus:free": {
-          "name": "Qwen3 Coder Plus (Free)"
+        "sensenova/sensenova-6.8-flash-lite": {
+          "name": "SenseNova 6.8 Flash-Lite (Free)"
         },
-        "qwen/qwen3.5-flash:free": {
-          "name": "Qwen3.5 Flash (Free)"
+        "qwen/qwen3.8-max:free": {
+          "name": "Qwen3.8 Max (Free)"
         },
         "qwen/qwen3.7-max:free": {
           "name": "Qwen3.7 Max (Free)"
@@ -274,15 +274,65 @@
         "qwen/qwen3.7-plus:free": {
           "name": "Qwen3.7 Plus (Free)"
         },
-        "qwen/qwen3.8-max:free": {
-          "name": "Qwen3.8 Max (Free)"
+        "qwen/qwen3.6-plus:free": {
+          "name": "Qwen3.6 Plus (Free)"
+        },
+        "qwen/qwen3.6-27b:free": {
+          "name": "Qwen3.6 27B (Free)"
+        },
+        "qwen/qwen3.6-35b-a3b:free": {
+          "name": "Qwen3.6 35B A3B (Free)"
+        },
+        "qwen/qwen3.5-plus:free": {
+          "name": "Qwen3.5 Plus (Free)"
+        },
+        "qwen/qwen3.5-flash:free": {
+          "name": "Qwen3.5 Flash (Free)"
+        },
+        "qwen/qwen3-coder-plus:free": {
+          "name": "Qwen3 Coder Plus (Free)"
+        },
+        "qwen/qwen3-omni-flash:free": {
+          "name": "Qwen3 Omni Flash (Free)"
+        },
+        "minimax/minimax-m3:free": {
+          "name": "MiniMax M3 (Free)"
+        },
+        "minimax/minimax-m2.7:free": {
+          "name": "MiniMax M2.7 (Free)"
+        },
+        "minimax/minimax-m2.5:free": {
+          "name": "MiniMax M2.5 (Free)"
+        },
+        "minimax/minimax-m2.1:free": {
+          "name": "MiniMax M2.1 (Free)"
         }
       },
       "name": "xKiro",
       "npm": "@ai-sdk/openai-compatible",
       "options": {
-        "apiKey": "{env:XKIRO_API_KEY}",
         "baseURL": "https://api.xkiro.com/v1"
+      }
+    },
+    "puter": {
+      "models": {
+        "qwen/qwen3.8-max": {
+          "name": "Qwen 3.8 Max (Puter Free)"
+        },
+        "qwen/qwen3.8-flash": {
+          "name": "Qwen 3.8 Flash (Puter Free)"
+        },
+        "qwen/qwen3.6-27b": {
+          "name": "Qwen 3.6 27B Coder (Puter Free)"
+        },
+        "qwen/qwen3.7-max": {
+          "name": "Qwen 3.7 Max (Puter Free)"
+        }
+      },
+      "name": "Puter Qwen (Free)",
+      "npm": "@ai-sdk/openai-compatible",
+      "options": {
+        "baseURL": "http://127.0.0.1:4141/v1"
       }
     }
   },

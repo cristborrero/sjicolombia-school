@@ -27,13 +27,30 @@ pnpm-debug.log*
 # PHP / Composer / Laravel
 /vendor/
 composer.phar
-composer.lock
 .phpunit.result.cache
+.phpunit.cache
 /storage/*.key
-/storage/app/public/
-/storage/framework/
+/storage/framework/bootstrap/
+/storage/framework/cache/
+/storage/framework/sessions/
+/storage/framework/testing/
+/storage/framework/views/
 /storage/logs/
 /bootstrap/cache/
 
+# SQLite database
+database/database.sqlite
+
+# Google credentials
+google-credentials.json
+
 # Gentle AI internal cache
 .atl/
+
+# Internal project documentation & planning
+*.plan.md
+openspec/
+
+# Build artifacts
+/public/build/
+/public/hot
