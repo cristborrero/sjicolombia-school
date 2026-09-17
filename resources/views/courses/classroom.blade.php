@@ -75,6 +75,25 @@
                 </div>
             @endif
 
+            {{-- Certificate Download Banner --}}
+            @if ($enrollment->certificate)
+                <div class="bg-white border border-gold/30 rounded-card p-5 mb-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 bg-gold/10 rounded-full flex items-center justify-center shrink-0">
+                            <span class="text-xl">🎓</span>
+                        </div>
+                        <div>
+                            <p class="text-sm font-bold text-navy">Certificado Oficial Disponible</p>
+                            <p class="text-xs text-gray-500">Código: <span class="font-mono font-semibold text-navy">{{ $enrollment->certificate->certificate_code }}</span></p>
+                        </div>
+                    </div>
+                    <a href="{{ route('student.certificate.download', $course->slug) }}"
+                       class="bg-navy text-white text-[11px] font-bold px-5 py-2.5 rounded-subtle tracking-wider uppercase hover:bg-navy-50 transition-colors whitespace-nowrap">
+                        Descargar Certificado (PDF)
+                    </a>
+                </div>
+            @endif
+
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-10">
 
                 {{-- Left column: Sessions --}}

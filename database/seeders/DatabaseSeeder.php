@@ -192,5 +192,13 @@ class DatabaseSeeder extends Seeder
             'file_type' => 'pdf',
             'file_size_bytes' => 102400,
         ]);
+
+        // ─── Sample Certificate ─────────────────────────
+        $studentEnrollment = Enrollment::where('user_id', $student->id)->where('course_id', $course->id)->first();
+        if ($studentEnrollment) {
+            $studentEnrollment->update(['status' => 'completed']);
+            $certificateService = app(\App\Services\CertificateService::class);
+            $certificateService->issueForEnrollment($studentEnrollment);
+        }
     }
 }

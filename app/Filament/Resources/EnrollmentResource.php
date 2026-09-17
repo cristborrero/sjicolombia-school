@@ -88,6 +88,14 @@ class EnrollmentResource extends Resource
                     ->label('Fecha de Matrícula')
                     ->dateTime('d/m/Y H:i')
                     ->sortable(),
+                Tables\Columns\IconColumn::make('has_certificate')
+                    ->label('Certificado')
+                    ->state(fn (Enrollment $record): bool => $record->certificate()->exists())
+                    ->boolean()
+                    ->trueIcon('heroicon-o-academic-cap')
+                    ->falseIcon('heroicon-o-minus')
+                    ->trueColor('success')
+                    ->falseColor('gray'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Creado')
                     ->dateTime('d/m/Y H:i')
@@ -103,10 +111,43 @@ class EnrollmentResource extends Resource
                 //
             ])
             ->actions([
+                Tables\Actions\Action::make('issue_certificate')
+                    ->label('Emitir Certificado')
+                    ->icon('heroicon-o-academic-cap')
+                    ->color('warning')
+                    ->visible(fn (Enrollment $record) => !$record->certificate()->exists() && in_array($record->status, ['confirmed', 'completed']))
+                    ->requiresConfirmation()
+                    ->action(function (Enrollment $record) {
+                        $cert = app(\App\Services\CertificateService::class)->issueForEnrollment($record);
+                        \Filament\Notifications\Notification::make()
+                            ->title('Certificado Emitido')
+                            ->body("Certificado {$cert->certificate_code} emitido con éxito.")
+                            ->success()
+                            ->send();
+                    }),
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
+                    Tables\Actions\BulkAction::make('issue_certificates_bulk')
+                        ->label('Emitir Certificados en Lote')
+                        ->icon('heroicon-o-academic-cap')
+                        ->requiresConfirmation()
+                        ->action(function (\Illuminate\Database\Eloquent\Collection $records) {
+                            $service = app(\App\Services\CertificateService::class);
+                            $count = 0;
+                            foreach ($records as $record) {
+                                if (!$record->certificate()->exists() && in_array($record->status, ['confirmed', 'completed'])) {
+                                    $service->issueForEnrollment($record);
+                                    $count++;
+                                }
+                            }
+                            \Filament\Notifications\Notification::make()
+                                ->title('Certificados Emitidos')
+                                ->body("Se han emitido {$count} certificados correctamente.")
+                                ->success()
+                                ->send();
+                        }),
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);

@@ -19,7 +19,7 @@
     <section class="bg-ivory py-16">
         <div class="max-w-editorial mx-auto px-6 lg:px-8">
             @php
-                $enrollments = auth()->user()->enrollments()->with('course.sessions')->whereIn('status', ['active', 'completed'])->get();
+                $enrollments = auth()->user()->enrollments()->with(['course.sessions', 'certificate'])->whereIn('status', ['active', 'completed'])->get();
             @endphp
 
             @if ($enrollments->count())
@@ -34,7 +34,7 @@
                                     <svg class="w-10 h-10 text-white/10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
                                 @endif
                                 {{-- Status badge --}}
-                                <div class="absolute top-4 left-4">
+                                <div class="absolute top-4 left-4 flex items-center gap-2">
                                     @if ($enrollment->status === 'active')
                                         <span class="inline-flex items-center gap-1.5 bg-white/95 text-ink text-[11px] font-bold px-3 py-1 rounded-subtle uppercase tracking-wider">
                                             <span class="w-1.5 h-1.5 bg-green-500 rounded-full"></span>
@@ -43,6 +43,12 @@
                                     @elseif ($enrollment->status === 'completed')
                                         <span class="inline-flex items-center gap-1.5 bg-gold text-white text-[11px] font-bold px-3 py-1 rounded-subtle uppercase tracking-wider">
                                             Completado
+                                        </span>
+                                    @endif
+
+                                    @if ($enrollment->certificate)
+                                        <span class="inline-flex items-center gap-1 bg-navy text-gold text-[10px] font-bold px-2.5 py-1 rounded-subtle uppercase tracking-wider">
+                                            🎓 Certificado
                                         </span>
                                     @endif
                                 </div>
@@ -69,11 +75,17 @@
                                     </div>
                                 @endif
 
-                                <div class="flex items-center gap-4">
+                                <div class="flex items-center gap-4 flex-wrap">
                                     <a href="{{ route('classroom.show', $enrollment->course->slug) }}" class="text-[12px] font-bold text-gold uppercase tracking-wider hover:text-gold-600 transition-colors flex items-center gap-1">
                                         Entrar al Aula
                                         <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
                                     </a>
+                                    @if ($enrollment->certificate)
+                                        <a href="{{ route('student.certificate.download', $enrollment->course->slug) }}" class="text-[12px] font-bold text-navy hover:text-gold transition-colors flex items-center gap-1">
+                                            <svg class="w-3.5 h-3.5 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                                            Certificado
+                                        </a>
+                                    @endif
                                     @if (auth()->user()->isTeacher() || auth()->user()->isAdmin())
                                         <a href="{{ route('teacher.roster', $enrollment->course->slug) }}" class="text-[12px] font-bold text-navy/60 uppercase tracking-wider hover:text-navy transition-colors">
                                             Asistencia

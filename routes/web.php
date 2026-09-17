@@ -6,6 +6,7 @@ use App\Http\Controllers\CertificateVerificationController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\ClassroomController;
 use App\Http\Controllers\CourseController;
+use App\Http\Controllers\StudentCertificateController;
 use App\Http\Controllers\TeacherDashboardController;
 use App\Http\Controllers\WebhookController;
 use App\Models\Course;
@@ -32,9 +33,16 @@ Route::get('/', function () {
 Route::get('/cursos', [CourseController::class, 'index'])->name('courses.index');
 Route::get('/cursos/{slug}', [CourseController::class, 'show'])->name('courses.show');
 
-// Certificate verification
-Route::get('/verificar', [CertificateVerificationController::class, 'showForm'])->name('certificates.verify');
-Route::get('/verificar/{code}', [CertificateVerificationController::class, 'verify'])->name('certificates.verify.code');
+// Certificate verification (public — QR destination or manual code search)
+Route::get('/verificar/{code?}', [CertificateVerificationController::class, 'verify'])->name('certificates.verify');
+Route::post('/verificar', function (\Illuminate\Http\Request $request) {
+    $code = trim($request->input('code') ?? $request->input('codigo') ?? '');
+    if (empty($code)) {
+        return redirect()->route('certificates.verify');
+    }
+    return redirect()->route('certificates.verify', ['code' => strtoupper($code)]);
+})->name('certificates.verify.post');
+Route::get('/verificar/{code}/pdf', [CertificateVerificationController::class, 'downloadPublicPdf'])->name('certificate.public.pdf');
 
 /*
 |--------------------------------------------------------------------------
@@ -69,6 +77,9 @@ Route::middleware('auth')->group(function () {
     // Virtual Classroom (enrolled students only)
     Route::get('/cursos/{slug}/aula', [ClassroomController::class, 'show'])->name('classroom.show');
     Route::get('/materiales/{material}/descargar', [ClassroomController::class, 'downloadMaterial'])->name('classroom.download');
+
+    // Student Certificate Download
+    Route::get('/mis-cursos/{courseSlug}/certificado', [StudentCertificateController::class, 'download'])->name('student.certificate.download');
 
     // Teacher Dashboard (teacher + admin only)
     Route::get('/docente/{slug}/asistencia', [TeacherDashboardController::class, 'roster'])->name('teacher.roster');
