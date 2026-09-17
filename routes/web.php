@@ -4,7 +4,9 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\CertificateVerificationController;
 use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\ClassroomController;
 use App\Http\Controllers\CourseController;
+use App\Http\Controllers\TeacherDashboardController;
 use App\Http\Controllers\WebhookController;
 use App\Models\Course;
 use Illuminate\Support\Facades\Route;
@@ -59,10 +61,18 @@ Route::middleware('auth')->group(function () {
     // Checkout
     Route::post('/checkout/{course}', [CheckoutController::class, 'initiate'])->name('checkout.initiate');
 
-    // My Courses (placeholder for Sprint 3)
+    // My Courses
     Route::get('/mis-cursos', function () {
         return view('courses.my-courses');
     })->name('my-courses');
+
+    // Virtual Classroom (enrolled students only)
+    Route::get('/cursos/{slug}/aula', [ClassroomController::class, 'show'])->name('classroom.show');
+    Route::get('/materiales/{material}/descargar', [ClassroomController::class, 'downloadMaterial'])->name('classroom.download');
+
+    // Teacher Dashboard (teacher + admin only)
+    Route::get('/docente/{slug}/asistencia', [TeacherDashboardController::class, 'roster'])->name('teacher.roster');
+    Route::post('/docente/{slug}/materiales', [TeacherDashboardController::class, 'uploadMaterial'])->name('teacher.upload-material');
 });
 
 /*

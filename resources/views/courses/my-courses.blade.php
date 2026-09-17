@@ -69,10 +69,18 @@
                                     </div>
                                 @endif
 
-                                <a href="{{ route('courses.show', $enrollment->course->slug) }}" class="text-[12px] font-bold text-gold uppercase tracking-wider hover:text-gold-600 transition-colors flex items-center gap-1">
-                                    Ver curso
-                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-                                </a>
+                                <div class="flex items-center gap-4">
+                                    <a href="{{ route('classroom.show', $enrollment->course->slug) }}" class="text-[12px] font-bold text-gold uppercase tracking-wider hover:text-gold-600 transition-colors flex items-center gap-1">
+                                        Entrar al Aula
+                                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                                    </a>
+                                    @if (auth()->user()->isTeacher() || auth()->user()->isAdmin())
+                                        <a href="{{ route('teacher.roster', $enrollment->course->slug) }}" class="text-[12px] font-bold text-navy/60 uppercase tracking-wider hover:text-navy transition-colors">
+                                            Asistencia
+                                        </a>
+                                    @endif
+                                </div>
+
                             </div>
                         </div>
                     @endforeach

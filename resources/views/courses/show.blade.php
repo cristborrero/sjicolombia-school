@@ -94,9 +94,12 @@
                     {{-- CTA --}}
                     @auth
                         @if ($isEnrolled)
-                            <div class="bg-ivory border border-gold/30 rounded-subtle p-4 text-center">
+                            <div class="bg-ivory border border-gold/30 rounded-subtle p-4 text-center mb-3">
                                 <p class="text-ink font-semibold text-sm">✓ Ya estás inscrito en este curso</p>
                             </div>
+                            <a href="{{ route('classroom.show', $course->slug) }}" class="btn-gold block w-full text-center !py-3.5 !text-base">
+                                Entrar al Aula Virtual
+                            </a>
                         @elseif (!$course->hasCapacity())
                             <div class="bg-ivory border border-gray-300 rounded-subtle p-4 text-center">
                                 <p class="text-gray-500 font-semibold text-sm">Cupos agotados</p>

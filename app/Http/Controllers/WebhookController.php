@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\EnrollmentConfirmedMail;
 use App\Models\Payment;
 use App\Services\Payment\PaymentGatewayInterface;
 use App\Services\Payment\PaymentManager;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 
 class WebhookController extends Controller
 {
@@ -101,6 +103,10 @@ class WebhookController extends Controller
         // If payment approved, activate enrollment
         if ($data['status'] === 'APPROVED') {
             $payment->enrollment->markAsActive();
+
+            // Send enrollment confirmation email (queued)
+            Mail::to($payment->enrollment->user)
+                ->send(new EnrollmentConfirmedMail($payment->enrollment));
 
             Log::info("Enrollment activated via {$gatewayName}", [
                 'enrollment_id' => $payment->enrollment_id,
